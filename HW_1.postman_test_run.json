@@ -1,0 +1,172 @@
+{
+	"id": "c610ec05-9edd-423e-8652-4f253f2b189b",
+	"name": "HW_1",
+	"timestamp": "2021-12-10T17:31:49.368Z",
+	"collection_id": "17760817-768b9a89-2521-4d3e-9748-710297c2db7d",
+	"folder_id": 0,
+	"environment_id": "0",
+	"totalPass": 0,
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "8ca48455-f0f4-488f-b7d8-6f63db76b1e9",
+			"name": "EP_1",
+			"url": "http://162.55.220.72:5005/get_method?name=Pasha&age=28",
+			"time": 87,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				87
+			],
+			"allTests": [
+				{}
+			]
+		},
+		{
+			"id": "ea40d47e-cfae-41c9-985f-34b51e457ea5",
+			"name": "EP_2",
+			"url": "http://162.55.220.72:5005/user_info_3",
+			"time": 75,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				75
+			],
+			"allTests": [
+				{}
+			]
+		},
+		{
+			"id": "a304bfd0-b571-493f-9ace-102926c1c4cc",
+			"name": "EP_3",
+			"url": "http://162.55.220.72:5005/object_info_1?name=Pasha&age=28&weight=80",
+			"time": 78,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				78
+			],
+			"allTests": [
+				{}
+			]
+		},
+		{
+			"id": "a07b908b-8ef0-461e-b0de-58d70e4b92c8",
+			"name": "EP_4",
+			"url": "http://162.55.220.72:5005/object_info_2?name=Pasha&age=28&salary=1000",
+			"time": 87,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				87
+			],
+			"allTests": [
+				{}
+			]
+		},
+		{
+			"id": "dfe6d26d-cc31-41fd-aa77-354e0bc3aff1",
+			"name": "EP_5",
+			"url": "http://162.55.220.72:5005/object_info_3?name=Pasha&age=28&salary=1000",
+			"time": 87,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				87
+			],
+			"allTests": [
+				{}
+			]
+		},
+		{
+			"id": "a755d942-1991-4bef-89c4-3403438d2b24",
+			"name": "EP_6",
+			"url": "http://162.55.220.72:5005/object_info_4?name=Pasha&age=28&salary=1000",
+			"time": 78,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				78
+			],
+			"allTests": [
+				{}
+			]
+		},
+		{
+			"id": "b9c0e8b1-30cb-4cdc-8f60-83e0835da7b2",
+			"name": "EP_7",
+			"url": "http://162.55.220.72:5005/user_info_2",
+			"time": 80,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				80
+			],
+			"allTests": [
+				{}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 572,
+	"collection": {
+		"requests": [
+			{
+				"id": "8ca48455-f0f4-488f-b7d8-6f63db76b1e9",
+				"method": "GET"
+			},
+			{
+				"id": "ea40d47e-cfae-41c9-985f-34b51e457ea5",
+				"method": "POST"
+			},
+			{
+				"id": "a304bfd0-b571-493f-9ace-102926c1c4cc",
+				"method": "GET"
+			},
+			{
+				"id": "a07b908b-8ef0-461e-b0de-58d70e4b92c8",
+				"method": "GET"
+			},
+			{
+				"id": "dfe6d26d-cc31-41fd-aa77-354e0bc3aff1",
+				"method": "GET"
+			},
+			{
+				"id": "a755d942-1991-4bef-89c4-3403438d2b24",
+				"method": "GET"
+			},
+			{
+				"id": "b9c0e8b1-30cb-4cdc-8f60-83e0835da7b2",
+				"method": "POST"
+			}
+		]
+	}
+}
