@@ -1,5 +1,7 @@
 # POSTMAN HW_1
-
+### Completed requests collection [HW_1.postman_collection.json](https://github.com/Pavlik1100/POSTMAN/blob/main/HW_1/HW_1.postman_collection.json)
+### Test run Completed requests collection [HW_1.postman_test_run.json](https://github.com/Pavlik1100/POSTMAN/blob/main/HW_1/HW_1.postman_test_run.json)
+#
 ### Create requests collection in Postman
 Protocol: `http`  
 IP: `162.55.220.72`  
