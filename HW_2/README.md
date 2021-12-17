@@ -33,20 +33,23 @@ const jsonData = pm.response.json();
 ```
 4. Проверить, что name в ответе равно name s request (name вбить руками.)
 ```javascript
-pm.test("Name is Pasha", () => {
-    pm.expect(jsonData.name).to.eql("Pasha");    
+pm.test("Name s request", () => {
+    const nameReq = request.data.name;
+    pm.expect(jsonData.name).to.eql(nameReq);    
 });
 ```
 5. Проверить, что age в ответе равно age s request (age вбить руками.)
 ```javascript
-pm.test("Age is 28", () => {
-    pm.expect(jsonData.age).to.eql("28");
+pm.test("Age s request", () => {
+    const ageReq = request.data.age;
+    pm.expect(jsonData.age).to.eql(ageReq);
 });
 ```
 6. Проверить, что salary в ответе равно salary s request (salary вбить руками.)
 ```javascript
-pm.test("Salary is 1000", () => {
-    pm.expect(jsonData.salary).to.eql(1000);
+pm.test("Salary s request", () => {
+    const salaryReq = request.data.salary;
+    pm.expect(jsonData.salary).to.eql(parseInt(salaryReq));
 });
 ```
 7. Спарсить request.
