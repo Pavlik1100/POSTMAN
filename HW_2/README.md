@@ -82,95 +82,94 @@
        })
        ```
    ##
-http://162.55.220.72:5005/object_info_3
-1. Отправить запрос.
-2. Статус код 200
-3. Спарсить response body в json.
-4. Спарсить request.
-5. Проверить, что name в ответе равно name s request (name забрать из request.)
-6. Проверить, что age в ответе равно age s request (age забрать из request.)
-7. Проверить, что salary в ответе равно salary s request (salary забрать из request.)
-8. Вывести в консоль параметр family из response.
-9. Проверить, что у параметра dog есть параметры name.
-10. Проверить, что у параметра dog есть параметры age.
-11. Проверить, что параметр name имеет значение Luky.
-12. Проверить, что параметр age имеет значение 4.
-
-pm.test("Status code is 200", function () {
-    pm.response.to.have.status(200);
-});
-
-const respJson = pm.response.json();
-console.log(respJson);
-
-let reqJson = {};
-pm.request.url.query.all().forEach((param) => {
-    reqJson[param.key]=param.value
-});
-
-console.log(reqJson);
-
-console.log(reqJson.name  + " " + typeof(reqJson.name));
-console.log(respJson.name + " " + typeof(respJson.name));
-
-pm.test("Name from response matches Name from request", () => {
-    pm.expect(respJson.name).to.eql(reqJson.name);
-});
-
-console.log(reqJson.age  + " " + typeof(reqJson.age));
-console.log(respJson.age + " " + typeof(respJson.age));
-
-pm.test("Age frim response matches Age from request", () => {
-    pm.expect(respJson.age).to.eql(reqJson.age);
-});
-
-console.log(reqJson.salary + " " + typeof(reqJson.salary));
-console.log(respJson.salary + " " + typeof(respJson.salary));
-
-pm.test("Salary from response matches Salary from request", () => {
-    pm.expect(respJson.salary).to.eql(parseInt(reqJson.salary));
-});
-
-console.log(respJson);
-
-pm.test("Property dog include property name", () => {
-    pm.expect(respJson.family.pets.dog).to.have.property("name");
-});
-
-pm.test("Property dog include property age", () => {
-    pm.expect(respJson.family.pets.dog).to.have.property("age");
-});
-
-pm.test("Property name matchs Luky", () => {
-    pm.expect(respJson.family.pets.dog.name).to.eql("Luky");
-});
-
-pm.test("Propery age matches 4", () => {
-    pm.expect(respJson.family.pets.dog.age).to.eql(4);
-})
-
-http://162.55.220.72:5005/object_info_4
-1. Отправить запрос.
-2. Статус код 200
-3. Спарсить response body в json.
-4. Спарсить request.
-5. Проверить, что name в ответе равно name s request (name забрать из request.)
-6. Проверить, что age в ответе равно age из request (age забрать из request.)
-7. Вывести в консоль параметр salary из request.
-8. Вывести в консоль параметр salary из response.
-9. Вывести в консоль 0-й элемент параметра salary из response.
-10. Вывести в консоль 1-й элемент параметра salary параметр salary из response.
-11. Вывести в консоль 2-й элемент параметра salary параметр salary из response.
-12. Проверить, что 0-й элемент параметра salary равен salary из request (salary забрать из request.)
-13. Проверить, что 1-й элемент параметра salary равен salary*2 из request (salary забрать из request.)
-14. Проверить, что 2-й элемент параметра salary равен salary*3 из request (salary забрать из request.)
-15. Создать в окружении переменную name
-16. Создать в окружении переменную age
-17. Создать в окружении переменную salary
-18. Передать в окружение переменную name
-19. Передать в окружение переменную age
-20. Передать в окружение переменную salary
-21. Написать цикл который выведет в консоль по порядку элементы списка из параметра salary.
+3) http://162.55.220.72:5005/object_info_3
+   1. Отправить запрос.  
+         Ззапрос на `http://162.55.220.72:5005/object_info_3` с методом `get` и `params` с ключами `age`, `name`, `salary`, отправляем нажав `send`
+   2. Статус код 200
+      ```javascript
+      pm.test("Status code is 200", function () {
+         pm.response.to.have.status(200);
+      });
+   3. Спарсить response body в json.
+      ```javascript
+      const respJson = pm.response.json();
+      ```
+   4. Спарсить request.
+      ```javascript
+      let reqJson = {}; 
+      pm.request.url.query.all().forEach((param) => {
+         reqJson[param.key]=param.value
+      });
+      ```
+   5. Проверить, что name в ответе равно name s request (name забрать из request.)
+      ```javascript
+      pm.test("Name from response matches Name from request", () => {
+         pm.expect(respJson.name).to.eql(reqJson.name);
+      });
+      ```
+   6. Проверить, что age в ответе равно age s request (age забрать из request.)
+      ```javascript
+      pm.test("Age frim response matches Age from request", () => {
+         pm.expect(respJson.age).to.eql(reqJson.age);
+      });
+      ```
+   7. Проверить, что salary в ответе равно salary s request (salary забрать из request.)
+      ```javascript
+      pm.test("Salary from response matches Salary from request", () => {
+         pm.expect(respJson.salary).to.eql(parseInt(reqJson.salary));
+      });
+      ```
+   8. Вывести в консоль параметр family из response.
+      ```javascript
+      console.log(respJson.family);
+      ```
+   9. Проверить, что у параметра dog есть параметры name.
+      ```javascript
+      pm.test("Property dog include property name", () => {
+         pm.expect(respJson.family.pets.dog).to.have.property("name");
+      });
+      ```
+    10. Проверить, что у параметра dog есть параметры age.
+        ```javascript
+        pm.test("Property dog include property age", () => {
+           pm.expect(respJson.family.pets.dog).to.have.property("age");
+        });
+        ```   
+     11. Проверить, что параметр name имеет значение Luky.
+         ```javascript
+         pm.test("Property name matchs Luky", () => {
+            pm.expect(respJson.family.pets.dog.name).to.eql("Luky");
+         });
+         ```  
+     12. Проверить, что параметр age имеет значение 4.
+         ```javascript
+         pm.test("Propery age matches 4", () => {
+            pm.expect(respJson.family.pets.dog.age).to.eql(4);
+         })
+         ```
+   ##
+4) http://162.55.220.72:5005/object_info_4
+   1. Отправить запрос.
+   2. Статус код 200
+   3. Спарсить response body в json.
+   4. Спарсить request.
+   5. Проверить, что name в ответе равно name s request (name забрать из request.)
+   6. Проверить, что age в ответе равно age из request (age забрать из request.)
+   7. Вывести в консоль параметр salary из request.
+   8. Вывести в консоль параметр salary из response.
+   9. Вывести в консоль 0-й элемент параметра salary из response.
+   10. Вывести в консоль 1-й элемент параметра salary параметр salary из response.
+   11. Вывести в консоль 2-й элемент параметра salary параметр salary из response.
+   12. Проверить, что 0-й элемент параметра salary равен salary из request (salary забрать из request.)
+   13. Проверить, что 1-й элемент параметра salary равен salary*2 из request (salary забрать из request.)
+   14. Проверить, что 2-й элемент параметра salary равен salary*3 из request (salary забрать из request.)
+   15. Создать в окружении переменную name
+   16. Создать в окружении переменную age
+   17. Создать в окружении переменную salary
+   18. Передать в окружение переменную name
+   19. Передать в окружение переменную age
+   20. Передать в окружение переменную salary
+   21. Написать цикл который выведет в консоль по порядку элементы списка из параметра salary.
 
 pm.test("Status code is 200", function () {
     pm.response.to.have.status(200);
