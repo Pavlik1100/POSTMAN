@@ -5,169 +5,225 @@
 
 =====
 
-1) необходимо залогиниться
-POST
-http://162.55.220.72:5005/login
-login : str (кроме /)
-password : str
+http://162.55.220.72:5005/first
+1. Отправить запрос.
+2. Статус код 200
+3. Проверить, что в body приходит правильный string.
 
-Приходящий токен необходимо передать во все остальные запросы.
+pm.test("Response has desired text", function () {
+    pm.expect(pm.response.text()).to.include("This is the first responce from server!");
+});
 
-===================
-дальше все запросы требуют наличие токена.
-===================
+http://162.55.220.72:5005/user_info_3
+1. Отправить запрос.
+2. Статус код 200
+3. Спарсить response body в json.
+4. Проверить, что name в ответе равно name s request (name вбить руками.)
+5. Проверить, что age в ответе равно age s request (age вбить руками.)
+6. Проверить, что salary в ответе равно salary s request (salary вбить руками.)
+7. Спарсить request.
+8. Проверить, что name в ответе равно name s request (name забрать из request.)
+9. Проверить, что age в ответе равно age s request (age забрать из request.)
+10. Проверить, что salary в ответе равно salary s request (salary забрать из request.)
+11. Вывести в консоль параметр family из response.
+12. Проверить что u_salary_1_5_year в ответе равно salary*4 (salary забрать из request)
 
-2) http://162.55.220.72:5005/user_info
-req. (RAW JSON)
-POST
-age: int
-salary: int
-name: str
-auth_token
+pm.test("Status code is 200", function () {
+    pm.response.to.have.status(200);
+});
 
+const jsonData = pm.response.json();
 
-resp.
-{'start_qa_salary':salary,
- 'qa_salary_after_6_months': salary * 2,
- 'qa_salary_after_12_months': salary * 2.9,
- 'person': {'u_name':[user_name, salary, age],
-                                'u_age':age,
-                                'u_salary_1.5_year': salary * 4}
-                                }
+pm.test("Name is Pasha", () => {
+    pm.expect(jsonData.name).to.eql("Pasha");    
+});
 
-Тесты:
-1) Статус код 200
-2) Проверка структуры json в ответе.
-3) В ответе указаны коэффициенты умножения salary, напишите тесты по проверке правильности результата перемножения на коэффициент.
-4) Достать значение из поля 'u_salary_1.5_year' и передать в поле salary запроса http://162.55.220.72:5005/get_test_user
-===================
+pm.test("Age is 28", () => {
+    pm.expect(jsonData.age).to.eql("28");
+});
 
-3) http://162.55.220.72:5005/new_data
-req.
-POST
-age: int
-salary: int
-name: str
-auth_token
+pm.test("Salary is 1000", () => {
+    pm.expect(jsonData.salary).to.eql(1000);
+});
 
-Resp.
-{'name':name,
-  'age': int(age),
-  'salary': [salary, str(salary*2), str(salary*3)]}
+const jsonData_req = request.data;
 
-Тесты:
-1) Статус код 200
-2) Проверка структуры json в ответе.
-3) В ответе указаны коэффициенты умножения salary, напишите тесты по проверке правильности результата перемножения на коэффициент.
-4) проверить, что 2-й элемент массива salary больше 1-го и 0-го
-===================
+pm.test("Name from response matches Name from request", () =>{
+    pm.expect(jsonData.name).to.eql(jsonData_req.name);    
+});
 
-4) http://162.55.220.72:5005/test_pet_info
-req.
-POST
-age: int
-weight: int
-name: str
-auth_token
+pm.test("Age from response matches Age from request", () => {
+    pm.expect(jsonData.age).to.eql(jsonData_req.age);
+})
 
+pm.test("Salary from response matches Salary from request", () => {
+    pm.expect(jsonData.salary).to.eql(parseInt(jsonData_req.salary));
+})
 
-Resp.
-{'name': name,
- 'age': age,
- 'daily_food':weight * 0.012,
- 'daily_sleep': weight * 2.5}
+console.log(jsonData.family);
+
+pm.test("u_salary_1_5_year from response matches salary*4 from request", () => {
+    pm.expect(jsonData.family.u_salary_1_5_year).to.eql((jsonData_req.salary)*4);
+})
+
+console.log("req Pasha = " + jsonData_req.name + ' - is ' + typeof(jsonData_req.name));
+console.log("req Age = " + jsonData_req.age + ' - is ' + typeof(jsonData_req.age))
+console.log("resp usalary_1_5_year = " + jsonData.family.u_salary_1_5_year + ' - is ' + typeof(jsonData.family.u_salary_1_5_year));
 
 
-Тесты:
-1) Статус код 200
-2) Проверка структуры json в ответе.
-3) В ответе указаны коэффициенты умножения weight, напишите тесты по проверке правильности результата перемножения на коэффициент.
+http://162.55.220.72:5005/object_info_3
+1. Отправить запрос.
+2. Статус код 200
+3. Спарсить response body в json.
+4. Спарсить request.
+5. Проверить, что name в ответе равно name s request (name забрать из request.)
+6. Проверить, что age в ответе равно age s request (age забрать из request.)
+7. Проверить, что salary в ответе равно salary s request (salary забрать из request.)
+8. Вывести в консоль параметр family из response.
+9. Проверить, что у параметра dog есть параметры name.
+10. Проверить, что у параметра dog есть параметры age.
+11. Проверить, что параметр name имеет значение Luky.
+12. Проверить, что параметр age имеет значение 4.
 
-===================
+pm.test("Status code is 200", function () {
+    pm.response.to.have.status(200);
+});
 
-5) http://162.55.220.72:5005/get_test_user
-req.
-POST
-age: int
-salary: int
-name: str
-auth_token
+const respJson = pm.response.json();
+console.log(respJson);
 
-Resp.
-{'name': name,
- 'age':age,
- 'salary': salary,
- 'family':{'children':[['Alex', 24],['Kate', 12]],
- 'u_salary_1.5_year': salary * 4}
-  }
+let reqJson = {};
+pm.request.url.query.all().forEach((param) => {
+    reqJson[param.key]=param.value
+});
 
-Тесты:
-1) Статус код 200
-2) Проверка структуры json в ответе.
-3) Проверить что занчение поля name = значению переменной name из окружения
-4) Проверить что занчение поля age в ответе соответсвует отправленному в запросе значению поля age
+console.log(reqJson);
 
-===================
+console.log(reqJson.name  + " " + typeof(reqJson.name));
+console.log(respJson.name + " " + typeof(respJson.name));
 
-6) http://162.55.220.72:5005/currency
-req.
-POST
-auth_token
+pm.test("Name from response matches Name from request", () => {
+    pm.expect(respJson.name).to.eql(reqJson.name);
+});
 
-Resp. Передаётся список массив объектов.
-[
-{"Cur_Abbreviation": str,
- "Cur_ID": int,
- "Cur_Name": str
-}
-…
-{"Cur_Abbreviation": str,
- "Cur_ID": int,
- "Cur_Name": str
-}
-]
+console.log(reqJson.age  + " " + typeof(reqJson.age));
+console.log(respJson.age + " " + typeof(respJson.age));
 
-Тесты:
-1) Можете взять любой объект из присланного списка, используйте js random.
-В объекте возьмите Cur_ID и передать через окружение в следующий запрос.
+pm.test("Age frim response matches Age from request", () => {
+    pm.expect(respJson.age).to.eql(reqJson.age);
+});
 
- ===================
+console.log(reqJson.salary + " " + typeof(reqJson.salary));
+console.log(respJson.salary + " " + typeof(respJson.salary));
 
-7) http://162.55.220.72:5005/curr_byn
-req.
-POST
-auth_token
-curr_code: int
+pm.test("Salary from response matches Salary from request", () => {
+    pm.expect(respJson.salary).to.eql(parseInt(reqJson.salary));
+});
 
-Resp.
-{
-    "Cur_Abbreviation": str
-    "Cur_ID": int,
-    "Cur_Name": str,
-    "Cur_OfficialRate": float,
-    "Cur_Scale": int,
-    "Date": str
-}
+console.log(respJson);
 
-Тесты:
-1) Статус код 200
-2) Проверка структуры json в ответе.
+pm.test("Property dog include property name", () => {
+    pm.expect(respJson.family.pets.dog).to.have.property("name");
+});
 
+pm.test("Property dog include property age", () => {
+    pm.expect(respJson.family.pets.dog).to.have.property("age");
+});
 
-===============
-***
-1) получить список валют
-2) итерировать список валют
-3) в каждой итерации отправлять запрос на сервер для получения курса каждой валюты
-4) если возвращается 500 код, переходим к следующей итреации
-5) если получаем 200 код, проверяем response json на наличие поля "Cur_OfficialRate"
-6) если поле есть, пишем в консоль инфу про фалюту в виде response
-{
-    "Cur_Abbreviation": str
-    "Cur_ID": int,
-    "Cur_Name": str,
-    "Cur_OfficialRate": float,
-    "Cur_Scale": int,
-    "Date": str
-}
-7) переходим к следующей итерации
+pm.test("Property name matchs Luky", () => {
+    pm.expect(respJson.family.pets.dog.name).to.eql("Luky");
+});
+
+pm.test("Propery age matches 4", () => {
+    pm.expect(respJson.family.pets.dog.age).to.eql(4);
+})
+
+http://162.55.220.72:5005/object_info_4
+1. Отправить запрос.
+2. Статус код 200
+3. Спарсить response body в json.
+4. Спарсить request.
+5. Проверить, что name в ответе равно name s request (name забрать из request.)
+6. Проверить, что age в ответе равно age из request (age забрать из request.)
+7. Вывести в консоль параметр salary из request.
+8. Вывести в консоль параметр salary из response.
+9. Вывести в консоль 0-й элемент параметра salary из response.
+10. Вывести в консоль 1-й элемент параметра salary параметр salary из response.
+11. Вывести в консоль 2-й элемент параметра salary параметр salary из response.
+12. Проверить, что 0-й элемент параметра salary равен salary из request (salary забрать из request.)
+13. Проверить, что 1-й элемент параметра salary равен salary*2 из request (salary забрать из request.)
+14. Проверить, что 2-й элемент параметра salary равен salary*3 из request (salary забрать из request.)
+15. Создать в окружении переменную name
+16. Создать в окружении переменную age
+17. Создать в окружении переменную salary
+18. Передать в окружение переменную name
+19. Передать в окружение переменную age
+20. Передать в окружение переменную salary
+21. Написать цикл который выведет в консоль по порядку элементы списка из параметра salary.
+
+pm.test("Status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+const jsonRes = pm.response.json();
+
+let jsonReq = {};
+pm.request.url.query.all().forEach((param) => {
+    jsonReq[param.key]=param.value
+});
+
+console.log(jsonReq);
+
+pm.test("Name from response matches Name from request", () => {
+    pm.expect(jsonRes.name).to.eql(jsonReq.name);
+});
+
+pm.test("Age from response matches Age from request", () => {
+    pm.expect(parseInt(jsonReq.age)).to.eql(jsonRes.age);
+});
+
+console.log(jsonReq.salary);
+
+console.log(jsonRes.salary);
+
+console.log(jsonRes.salary[0]);
+
+console.log(jsonRes.salary[1]);
+
+console.log(jsonRes.salary[2]);
+
+pm.test("Property salary[0] from response matches property from salary request", () => {
+    pm.expect(parseInt(jsonReq.salary)).to.eql(jsonRes.salary[0]);
+});
+
+pm.test("Property salary[1] from response matches property from salary request x 2", () => {
+    pm.expect(parseInt(jsonReq.salary)*2).to.eql(parseInt(jsonRes.salary[1]));
+});
+
+pm.test("Property salary[2] from response matches property from request x 3", () => {
+    pm.expect(parseInt(jsonReq.salary)*3).to.eql(parseInt(jsonRes.salary[2]));
+})
+
+http://162.55.220.72:5005/user_info_2
+1. Вставить параметр salary из окружения в request
+2. Вставить параметр age из окружения в age
+3. Вставить параметр name из окружения в name
+4. Отправить запрос.
+5. Статус код 200
+6. Спарсить response body в json.
+7. Спарсить request.
+8. Проверить, что json response имеет параметр start_qa_salary
+9. Проверить, что json response имеет параметр qa_salary_after_6_months
+10. Проверить, что json response имеет параметр qa_salary_after_12_months
+11. Проверить, что json response имеет параметр qa_salary_after_1.5_year
+12. Проверить, что json response имеет параметр qa_salary_after_3.5_years
+13. Проверить, что json response имеет параметр person
+14. Проверить, что параметр start_qa_salary равен salary из request (salary забрать из request.)
+15. Проверить, что параметр qa_salary_after_6_months равен salary*2 из request (salary забрать из request.)
+16. Проверить, что параметр qa_salary_after_12_months равен salary*2.7 из request (salary забрать из request.)
+17. Проверить, что параметр qa_salary_after_1.5_year равен salary*3.3 из request (salary забрать из request.)
+18. Проверить, что параметр qa_salary_after_3.5_years равен salary*3.8 из request (salary забрать из request.)
+19. Проверить, что в параметре person, 1-й элемент из u_name равен salary из request (salary забрать из request.)
+20. Проверить, что что параметр u_age равен age из request (age забрать из request.)
+21. Проверить, что параметр u_salary_5_years равен salary*4.2 из request (salary забрать из request.)
+22. ***Написать цикл который выведет в консоль по порядку элементы списка из параметра person.
