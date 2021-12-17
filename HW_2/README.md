@@ -1,89 +1,87 @@
-# POSTMAN
-### [HW_1](https://github.com/Pavlik1100/POSTMAN/tree/main/HW_1) - Simple requests collection in Postman 
-ДЗ_2 Postman
-=====
-
-=====
-
-http://162.55.220.72:5005/first
-1. Отправить запрос.
-2. Статус код 200
-```javascript
-pm.test("Status code is 200", function () {
-    pm.response.to.have.status(200);
-});
-```
-3. Проверить, что в body приходит правильный string.
-```javascript
-pm.test("Response has desired text", function () {
-    pm.expect(pm.response.text()).to.include("This is the first responce from server!");
-});
-```
-http://162.55.220.72:5005/user_info_3
-1. Отправить запрос.
-2. Статус код 200
-```javascript
-pm.test("Status code is 200", function () {
-    pm.response.to.have.status(200);
-});
-```
-3. Спарсить response body в json.
-```javascript
-const jsonData = pm.response.json();
-```
-4. Проверить, что name в ответе равно name s request (name вбить руками.)
-```javascript
-pm.test("Name s request", () => {
-    const nameReq = request.data.name;
-    pm.expect(jsonData.name).to.eql(nameReq);    
-});
-```
-5. Проверить, что age в ответе равно age s request (age вбить руками.)
-```javascript
-pm.test("Age s request", () => {
-    const ageReq = request.data.age;
-    pm.expect(jsonData.age).to.eql(ageReq);
-});
-```
-6. Проверить, что salary в ответе равно salary s request (salary вбить руками.)
-```javascript
-pm.test("Salary s request", () => {
-    const salaryReq = request.data.salary;
-    pm.expect(jsonData.salary).to.eql(parseInt(salaryReq));
-});
-```
-7. Спарсить request.
-```javascript
-const jsonData_req = request.data;
-```
-8. Проверить, что name в ответе равно name s request (name забрать из request.)
-```javascript
-pm.test("Name from response matches Name from request", () =>{
-    pm.expect(jsonData.name).to.eql(jsonData_req.name);    
-});
-```
-9. Проверить, что age в ответе равно age s request (age забрать из request.)
-```javascript
-pm.test("Age from response matches Age from request", () => {
-    pm.expect(jsonData.age).to.eql(jsonData_req.age);
-})
-```
-10. Проверить, что salary в ответе равно salary s request (salary забрать из request.)
-```javascript
-pm.test("Salary from response matches Salary from request", () => {
-    pm.expect(jsonData.salary).to.eql(parseInt(jsonData_req.salary));
-})
-```
-11. Вывести в консоль параметр family из response.
-```javascript
-console.log(jsonData.family);
-```
-12. Проверить что u_salary_1_5_year в ответе равно salary*4 (salary забрать из request)
-```javascript
-pm.test("u_salary_1_5_year from response matches salary*4 from request", () => {
-    pm.expect(jsonData.family.u_salary_1_5_year).to.eql((jsonData_req.salary)*4);
-})
-```
+## HW_2 Postman
+1. http://162.55.220.72:5005/first
+   1) Отправить запрос.  
+      Ззапрос на `http://162.55.220.72:5005/first` с методом `get`, отправляем нажав `send`
+   2) Статус код `200`
+      ```javascript
+      pm.test("Status code is 200", function () {
+         pm.response.to.have.status(200);
+      });
+      ```
+   3) Проверить, что в body приходит правильный string.
+      ```javascript
+      pm.test("Response has desired text", function () {
+         pm.expect(pm.response.text()).to.include("This is the first responce from server!");
+      });
+      ```
+   ##
+2. http://162.55.220.72:5005/user_info_3
+   1. Отправить запрос.  
+      Ззапрос на `http://162.55.220.72:5005/user_info_3` с методом `post` и `body` `form-data` с ключами `age`, `name`, `salary`, отправляем нажав `send`
+   2. Статус код 200
+      ```javascript
+      pm.test("Status code is 200", function () {
+         pm.response.to.have.status(200);
+      });
+      ```
+   3. Спарсить response body в json.
+      ```javascript
+      const jsonData = pm.response.json();
+      ```
+   4. Проверить, что name в ответе равно name s request (name вбить руками.)
+      ```javascript
+      pm.test("Name s request", () => {
+         const nameReq = request.data.name;
+         pm.expect(jsonData.name).to.eql(nameReq);    
+      });
+      ```
+   5. Проверить, что age в ответе равно age s request (age вбить руками.)
+      ```javascript
+      pm.test("Age s request", () => {
+         const ageReq = request.data.age;
+         pm.expect(jsonData.age).to.eql(ageReq);
+      });
+      ```
+   6. Проверить, что salary в ответе равно salary s request (salary вбить руками.)
+      ```javascript
+      pm.test("Salary s request", () => {
+         const salaryReq = request.data.salary;
+         pm.expect(jsonData.salary).to.eql(parseInt(salaryReq));
+      });
+      ```
+   7. Спарсить request.
+      ```javascript
+      const jsonData_req = request.data;
+      ```
+   8. Проверить, что name в ответе равно name s request (name забрать из request.)
+      ```javascript
+      pm.test("Name from response matches Name from request", () =>{
+         pm.expect(jsonData.name).to.eql(jsonData_req.name);    
+      });
+      ```
+   9. Проверить, что age в ответе равно age s request (age забрать из request.)
+      ```javascript
+      pm.test("Age from response matches Age from request", () => {
+         pm.expect(jsonData.age).to.eql(jsonData_req.age);
+      })
+      ```
+   10. Проверить, что salary в ответе равно salary s request (salary забрать из request.)
+       ```javascript
+       pm.test("Salary from response matches Salary from request", () => {
+          pm.expect(jsonData.salary).to.eql(parseInt(jsonData_req.salary));
+       })
+       ```
+   11. Вывести в консоль параметр family из response.
+       ```javascript
+       console.log(jsonData.family);
+       ```
+   12. Проверить что u_salary_1_5_year в ответе равно salary*4 (salary забрать из request)
+       ```javascript
+       pm.test("u_salary_1_5_year from response matches salary*4 from request", () => {
+          pm.expect(jsonData.family.u_salary_1_5_year).to.eql((jsonData_req.salary)*4);
+       })
+       ```
+   ##
 http://162.55.220.72:5005/object_info_3
 1. Отправить запрос.
 2. Статус код 200
