@@ -216,38 +216,39 @@
        pm.test("Property salary[2] from response matches property from request x 3", () => {
           pm.expect(parseInt(jsonReq.salary)*3).to.eql(parseInt(jsonRes.salary[2]));
        });
-   15. Создать в окружении переменную name
-   
-   16. Создать в окружении переменную age
-   
-   17. Создать в окружении переменную salary
-   
+   15. Создать в окружении переменную name    
+       Вкладка `Environments` -> выбираем окружение -> создать переменные `name` -> сохранить окружение
+   16. Создать в окружении переменную age  
+       Вкладка `Environments` -> выбираем окружение -> создать переменные `age` -> сохранить окружение
+   17. Создать в окружении переменную salary  
+       Вкладка `Environments` -> выбираем окружение -> создать переменные `salary` -> сохранить окружение
    18. Передать в окружение переменную name
-   
+       ```javascript
+       const name_res = jsonRes.name;
+       pm.environment.set("name", name_res);
+       ```
    19. Передать в окружение переменную age
-   
+       ```javascript
+       const age_res = jsonRes.age;
+       pm.environment.set("age", age_res);
+       ```
    20. Передать в окружение переменную salary
-   
+       ```javascript
+       const salary_res = jsonRes.salary[0];
+       pm.environment.set("salary", salary_res);
+       ```
    21. Написать цикл который выведет в консоль по порядку элементы списка из параметра salary.
+       ```javascript
+       const list_of_salary = Array.from(jsonRes.salary);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+       for (let i=0; i<list_of_salary.length; i += 1) {
+          console.log(list_of_salary[i]);
+       }
+       ```
+       или
+       ```javascript
+       jsonRes.salary.forEach(el => console.log(el));
+       ```
 http://162.55.220.72:5005/user_info_2
 1. Вставить параметр salary из окружения в request
 2. Вставить параметр age из окружения в age
