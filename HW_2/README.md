@@ -249,151 +249,152 @@
        ```javascript
        jsonRes.salary.forEach(el => console.log(el));
        ```
+##
 5) http://162.55.220.72:5005/user_info_2
    1. Вставить параметр salary из окружения в request  
-   `Pre-request Script`
-   ```javascript
-   pm.request.body.formdata.add({
-     key: "name",
-     value: pm.environment.get("name")
-   });
-   ```
-   2. Вставить параметр age из окружения в age  
-   `Pre-request Script`
-   ```javascript
-   pm.request.body.formdata.add({
-      key: "name",
-      value: pm.environment.get("name")
-   });
-   ```
-   3. Вставить параметр name из окружения в name  
       `Pre-request Script`
-   ```javascript
-   pm.request.body.formdata.add({
-      key: "salary",
-      value: pm.environment.get("salary")
-   });
-   ```
+      ```javascript
+      pm.request.body.formdata.add({
+         key: "name",
+         value: pm.environment.get("name")
+      });
+      ```
+   2. Вставить параметр age из окружения в age  
+      `Pre-request Script`
+      ```javascript
+      pm.request.body.formdata.add({
+         key: "name",
+         value: pm.environment.get("name")
+      });
+      ```
+   3. Вставить параметр name из окружения в name  
+         `Pre-request Script`
+      ```javascript
+      pm.request.body.formdata.add({
+         key: "salary",
+         value: pm.environment.get("salary")
+      });
+      ```
    4. Отправить запрос.  
       Ззапрос на `http://162.55.220.72:5005/user_info_2` с методом `post` и `params` с ключами `age`, `name`, `salary`, параметры создаются в `Pre-request Script` со значениями из переменных в `Environment` `Group_25`, отправляем нажав `send`
    5. Статус код 200
-   ```javascript
-   pm.test("Status code is 200", function () {
-      pm.response.to.have.status(200);
-   });
-   ```
+      ```javascript
+      pm.test("Status code is 200", function () {
+         pm.response.to.have.status(200);
+      });
+      ```
    6. Спарсить response body в json.
-   ```javascript
-   const Res = pm.response.json();
-   ```
+      ```javascript
+      const Res = pm.response.json();
+      ```
    7. Спарсить request.
-   ```javascript
-   const Req = request.data;
-   ```
+      ```javascript
+      const Req = request.data;
+      ```
    8. Проверить, что json response имеет параметр start_qa_salary
-   ```javascript
-   pm.test("Response JSON have property start_qa_salary", () => {
-      pm.expect(Res).to.have.property("start_qa_salary");
-   });
-   ```
+      ```javascript
+      pm.test("Response JSON have property start_qa_salary", () => {
+         pm.expect(Res).to.have.property("start_qa_salary");
+      });
+      ```
    9. Проверить, что json response имеет параметр qa_salary_after_6_months
-   ```javascript
-   pm.test("Response JSON have property qa_salary_after_6_months", () => {
-      pm.expect(Res).to.have.property("qa_salary_after_6_months");
-   });
-   ```
+      ```javascript
+      pm.test("Response JSON have property qa_salary_after_6_months", () => {
+         pm.expect(Res).to.have.property("qa_salary_after_6_months");
+      });
+      ```
    10. Проверить, что json response имеет параметр qa_salary_after_12_months
-   ```javascript
-   pm.test("Response JSON have property qa_salary_after_12_months", () => {
-      pm.expect(Res).to.have.property("qa_salary_after_12_months");
-   });
-   ```
+         ```javascript
+         pm.test("Response JSON have property qa_salary_after_12_months", () => {
+            pm.expect(Res).to.have.property("qa_salary_after_12_months");
+         });
+         ```
    11. Проверить, что json response имеет параметр qa_salary_after_1.5_year
-   ```javascript
-   pm.test("Response JSON have property qa_salary_after_1.5_year", () => {
-      pm.expect(Res).to.have.property("qa_salary_after_1.5_year");
-   });
-   ```
+         ```javascript
+         pm.test("Response JSON have property qa_salary_after_1.5_year", () => {
+            pm.expect(Res).to.have.property("qa_salary_after_1.5_year");
+         });
+         ```
    12. Проверить, что json response имеет параметр qa_salary_after_3.5_years
-   ```javascript
-   pm.test("Response JSON have propery qa_salary_after_3.5_years", () => {
-      pm.expect(Res).to.have.property("qa_salary_after_3.5_years");
-   });
-   ```
+         ```javascript
+         pm.test("Response JSON have propery qa_salary_after_3.5_years", () => {
+            pm.expect(Res).to.have.property("qa_salary_after_3.5_years");
+         });
+         ```
    13. Проверить, что json response имеет параметр person
-   ```javascript
-   pm.test("Response JSON have property person", () => {
-      pm.expect(Res).to.have.property("person");
-   });
-   ```
+         ```javascript
+         pm.test("Response JSON have property person", () => {
+            pm.expect(Res).to.have.property("person");
+         });
+         ```
    14. Проверить, что параметр start_qa_salary равен salary из request (salary забрать из request.)
-   ```javascript
-   pm.test("start_qa_salary from response matches salary from request", () => {
-      const salary = Req.salary;
-      pm.expect(Res.start_qa_salary).to.eql(salary);
-   });
-   ```
+         ```javascript
+         pm.test("start_qa_salary from response matches salary from request", () => {
+            const salary = Req.salary;
+            pm.expect(Res.start_qa_salary).to.eql(salary);
+         });
+         ```
    15. Проверить, что параметр qa_salary_after_6_months равен salary*2 из request (salary забрать из request.)
-   ```javascript
-   pm.test("qa_salary_after_6_months from response matches salary x2 from request", () => {
-      const salary = Req.salary*2;
-      pm.expect(Res.qa_salary_after_6_months).to.eql(salary);
-   });
-   ```
+         ```javascript
+         pm.test("qa_salary_after_6_months from response matches salary x2 from request", () => {
+            const salary = Req.salary*2;
+            pm.expect(Res.qa_salary_after_6_months).to.eql(salary);
+         });
+         ```
    16. Проверить, что параметр qa_salary_after_12_months равен salary*2.7 из request (salary забрать из request.)
-   ```javascript
-   pm.test("qa_salary_after_12_months from response matches salary x2.7 from request", () => {
-      const salary = Req.salary*2.7;
-      pm.expect(Res.qa_salary_after_12_months).to.eql(salary);
-   });
-   ```
+         ```javascript
+         pm.test("qa_salary_after_12_months from response matches salary x2.7 from request", () => {
+            const salary = Req.salary*2.7;
+            pm.expect(Res.qa_salary_after_12_months).to.eql(salary);
+         });
+         ```
    17. Проверить, что параметр qa_salary_after_1.5_year равен salary*3.3 из request (salary забрать из request.)
-   ```javascript
-   pm.test("qa_salary_after_1.5_year from response matches salary x3.3 from request", () => {
-      const salary = Req.salary*3.3;
-      const salary_res = Res["qa_salary_after_1.5_year"];
-      pm.expect(salary_res).to.eql(salary);
-   });
-   ```
+         ```javascript
+         pm.test("qa_salary_after_1.5_year from response matches salary x3.3 from request", () => {
+            const salary = Req.salary*3.3;
+            const salary_res = Res["qa_salary_after_1.5_year"];
+            pm.expect(salary_res).to.eql(salary);
+         });
+         ```
    18. Проверить, что параметр qa_salary_after_3.5_years равен salary*3.8 из request (salary забрать из request.)
-   ```javascript   
-   pm.test("qa_salary_after_3.5_years from response matches salary x3.8 from request", () => {
-      const salary = Req.salary*3.8;
-      const salary_res = Res["qa_salary_after_3.5_years"];
-      pm.expect(salary_res).to.eql(salary);
-   });
-   ```
+         ```javascript   
+         pm.test("qa_salary_after_3.5_years from response matches salary x3.8 from request", () => {
+            const salary = Req.salary*3.8;
+            const salary_res = Res["qa_salary_after_3.5_years"];
+            pm.expect(salary_res).to.eql(salary);
+         });
+         ```
    19. Проверить, что в параметре person, 1-й элемент из u_name равен salary из request (salary забрать из request.)
-   ```javascript
-   pm.test("salary from u_name property person from response matches salary from request", () => {
-      const salary = Req.salary;
-      const salary_res = Res.person.u_name[1];
-      pm.expect(salary).to.eql(salary_res);
-    });
-   ```
+         ```javascript
+         pm.test("salary from u_name property person from response matches salary from request", () => {
+            const salary = Req.salary;
+            const salary_res = Res.person.u_name[1];
+            pm.expect(salary).to.eql(salary_res);
+          });
+         ```
    20. Проверить, что что параметр u_age равен age из request (age забрать из request.)
-   ```javascript
-   pm.test("u_age from property person from response matches name from request", () => {
-      const age = Req.age;
-      const age_res = Res.person.u_age;
-      pm.expect(age).to.eql(age_res);
-   })
-   ```
+         ```javascript
+         pm.test("u_age from property person from response matches name from request", () => {
+            const age = Req.age;
+            const age_res = Res.person.u_age;
+            pm.expect(age).to.eql(age_res);
+         })
+         ```
    21. Проверить, что параметр u_salary_5_years равен salary*4.2 из request (salary забрать из request.)
-   ```javascript
-   pm.test("u_salary_5_years from property person matches salary x4.2 from request", () => {
-      const salary = Req.salary * 4.2;
-      const salary_res = Res.person.u_salary_5_years;
-      pm.expect(salary).to.eql(salary_res);
-   })
-   ```
+         ```javascript
+         pm.test("u_salary_5_years from property person matches salary x4.2 from request", () => {
+            const salary = Req.salary * 4.2;
+            const salary_res = Res.person.u_salary_5_years;
+            pm.expect(salary).to.eql(salary_res);
+         })
+         ```
    22. ***Написать цикл который выведет в консоль по порядку элементы списка из параметра person.
-   ```javascript
-   for (let i = 0; i < Res.person.u_name.length; i += 1) {
-      console.log(Res.person.u_name[i]);
-   };
-   ```
-   или
-   ```javascript
-   Res.person.u_name.forEach(el => console.log(el))
-   ```
+         ```javascript
+         for (let i = 0; i < Res.person.u_name.length; i += 1) {
+            console.log(Res.person.u_name[i]);
+         };
+         ```
+         или  
+         ```javascript
+         Res.person.u_name.forEach(el => console.log(el))
+         ```
