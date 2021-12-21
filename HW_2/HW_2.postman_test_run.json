@@ -1,36 +1,42 @@
 {
-	"id": "9dc64244-3279-405a-b725-21ff1b6d5e13",
+	"id": "a09c1882-7be1-4b36-bbc3-e42efd3b6df6",
 	"name": "HW_2",
-	"timestamp": "2021-12-20T15:21:17.980Z",
+	"timestamp": "2021-12-21T14:42:47.356Z",
 	"collection_id": "17760817-efeaab5a-8957-45b5-aa3b-729618e59269",
 	"folder_id": 0,
 	"environment_id": "430d3f43-50b3-45cf-a29b-3ddec2725917",
-	"totalPass": 38,
+	"totalPass": 39,
 	"totalFail": 0,
 	"results": [
 		{
 			"id": "0265c2d2-0057-4e91-9750-77d3b1d2ed7d",
 			"name": "1) first",
 			"url": "http://162.55.220.72:5005/first",
-			"time": 735,
+			"time": 86,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
 			},
 			"tests": {
+				"Code 200 OK": true,
 				"Response has desired text": true
 			},
 			"testPassFailCounts": {
+				"Code 200 OK": {
+					"pass": 1,
+					"fail": 0
+				},
 				"Response has desired text": {
 					"pass": 1,
 					"fail": 0
 				}
 			},
 			"times": [
-				735
+				86
 			],
 			"allTests": [
 				{
+					"Code 200 OK": true,
 					"Response has desired text": true
 				}
 			]
@@ -39,7 +45,7 @@
 			"id": "7043c2ea-426d-43bd-a45b-4ec5ee320e08",
 			"name": "2) user_info_3",
 			"url": "http://162.55.220.72:5005/user_info_3",
-			"time": 404,
+			"time": 87,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -89,7 +95,7 @@
 				}
 			},
 			"times": [
-				404
+				87
 			],
 			"allTests": [
 				{
@@ -108,7 +114,7 @@
 			"id": "29b05bcf-d9b2-4da9-b305-e455c8ef306d",
 			"name": "3) object_info_3",
 			"url": "http://162.55.220.72:5005/object_info_3?name=Pasha&age=28&salary=1000",
-			"time": 487,
+			"time": 74,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -158,7 +164,7 @@
 				}
 			},
 			"times": [
-				487
+				74
 			],
 			"allTests": [
 				{
@@ -177,7 +183,7 @@
 			"id": "41708333-4459-4c7f-9e92-a49748ed4ad8",
 			"name": "4) object_info_4",
 			"url": "http://162.55.220.72:5005/object_info_4?name=Pasha&age=28&salary=1000",
-			"time": 393,
+			"time": 69,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -217,7 +223,7 @@
 				}
 			},
 			"times": [
-				393
+				69
 			],
 			"allTests": [
 				{
@@ -234,7 +240,7 @@
 			"id": "7a87828b-e48a-477c-b73d-3b2e575c0610",
 			"name": "5) user_info_2",
 			"url": "http://162.55.220.72:5005/user_info_2",
-			"time": 422,
+			"time": 78,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -319,7 +325,7 @@
 				}
 			},
 			"times": [
-				422
+				78
 			],
 			"allTests": [
 				{
@@ -343,7 +349,7 @@
 		}
 	],
 	"count": 1,
-	"totalTime": 2441,
+	"totalTime": 394,
 	"collection": {
 		"requests": [
 			{
