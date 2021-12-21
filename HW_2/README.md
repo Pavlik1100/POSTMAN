@@ -239,15 +239,9 @@
        ```
    21. Написать цикл который выведет в консоль по порядку элементы списка из параметра salary.
        ```javascript
-       const list_of_salary = Array.from(jsonRes.salary);
-
-       for (let i=0; i<list_of_salary.length; i += 1) {
-          console.log(list_of_salary[i]);
+       for (let sal in jsonRes.salary){
+          console.log('salary element '+ sal + ' - ' + jsonRes.salary[sal]);
        }
-       ```
-       или
-       ```javascript
-       jsonRes.salary.forEach(el => console.log(el));
        ```
 ##
 5) http://162.55.220.72:5005/user_info_2
@@ -390,11 +384,14 @@
          ```
    22. ***Написать цикл который выведет в консоль по порядку элементы списка из параметра person.
          ```javascript
-         for (let i = 0; i < Res.person.u_name.length; i += 1) {
-            console.log(Res.person.u_name[i]);
-         };
-         ```
-         или  
-         ```javascript
-         Res.person.u_name.forEach(el => console.log(el))
+         for (let pers in Res.person) {
+            if (Array.isArray(Res.person[pers])) {
+               for (let nam in Res.person.u_name) {        
+                  console.log(pers + " - " + Res.person.u_name[nam]);
+               }
+            }
+            else {
+               console.log(pers + " - " + Res.person[pers]);
+            }    
+         }
          ```
