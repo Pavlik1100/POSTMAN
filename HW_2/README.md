@@ -1,4 +1,7 @@
-## HW_2 Postman
+# HW_2 POSTMAN
+### Completed requests collection [HW_2.postman_collection.json](https://github.com/Pavlik1100/POSTMAN/blob/main/HW_2/HW_2.postman_collection.json)
+### Test run Completed requests collection [HW_2.postman_test_run.json](https://github.com/Pavlik1100/POSTMAN/blob/main/HW_2/HW_2.postman_test_run.json)
+#
 1. http://162.55.220.72:5005/first
    1) Отправить запрос.  
       Ззапрос на `http://162.55.220.72:5005/first` с методом `get`, отправляем нажав `send`
@@ -395,3 +398,4 @@
             }    
          }
          ```
+# [Back to main dir POSTMAN](https://github.com/Pavlik1100/POSTMAN)
