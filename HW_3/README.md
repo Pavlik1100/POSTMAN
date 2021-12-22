@@ -3,33 +3,29 @@
 ### Test run Completed requests collection [HW_2.postman_test_run.json](https://github.com/Pavlik1100/POSTMAN/blob/main/HW_2/HW_2.postman_test_run.json)
 #
 
-/*
-1) необходимо залогиниться
-POST
-http://162.55.220.72:5005/login
-login : str (кроме /)
-password : str
+### 1) необходимо залогиниться и получить токен
+`POST`  
+`http://162.55.220.72:5005/login`  
+`login` : str (кроме /)  
+`password` : str  
 
-Приходящий токен необходимо передать во все остальные запросы.
-
-===================
-дальше все запросы требуют наличие токена.
-*/
+Приходящий токен необходимо передать во все остальные запросы.  
+```javascript
 var jsonData = pm.response.json();
 var get_token = jsonData.token;
 pm.environment.set("token", get_token);
+```
+#
+### 2) http://162.55.220.72:5005/user_info
+`req.` (RAW JSON)  
+`POST`  
+`age`: int  
+`salary`: int  
+`name`: str  
+`auth_token`  
 
-/*
-2) http://162.55.220.72:5005/user_info
-req. (RAW JSON)
-POST
-age: int
-salary: int
-name: str
-auth_token
-
-
-resp.
+`resp.`
+```sh
 {'start_qa_salary':salary,
  'qa_salary_after_6_months': salary * 2,
  'qa_salary_after_12_months': salary * 2.9,
@@ -37,15 +33,16 @@ resp.
                                 'u_age':age,
                                 'u_salary_1.5_year': salary * 4}
                                 }
+```  
+#
+### Тесты:
 
-===================
-Тесты:
-*/
-
-//1) Статус код 200
-pm.test("Status code is 200", function () {
-    pm.response.to.have.status(200);
-});
+1) Статус код 200
+   ```javascript
+   pm.test("Status code is 200", function () {
+       pm.response.to.have.status(200);
+   });
+   ```
 
 //2) Проверка структуры json в ответе.
 const schema = {
@@ -54,10 +51,22 @@ const schema = {
         "person": {
             "type": "object",
             "properties":{
-                "u_age": {"type": "integer"},
+                "u_age": {
+                    "type": "integer"
+                },
                 "u_name": {
                     "type": "array",
-                    "items": [{"type": "string"},{"type": "integer"},{"type": "integer"}]
+                    "items": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ]
                 },
                 "u_salary_1_5_eyar": {
                     "type": "integer"    
@@ -86,6 +95,7 @@ const schema = {
         "start_qa_salary"
     ]
 }
+
 pm.test("Validate schema", () =>{
     pm.response.to.have.jsonSchema(schema);
 });
