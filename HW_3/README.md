@@ -37,159 +37,171 @@ pm.environment.set("token", get_token);
 #
 ### Тесты:
 
-1) Статус код 200
-   ```javascript
-   pm.test("Status code is 200", function () {
-       pm.response.to.have.status(200);
-   });
+   1) Статус код 200
+      ```javascript
+      pm.test("Status code is 200", function () {
+          pm.response.to.have.status(200);
+      });
+      ```
+
+   2) Проверка структуры json в ответе.
+      ```javascript
+      const schema = {
+          "type": "object",
+          "properties": {
+              "person": {
+                  "type": "object",
+                  "properties":{
+                      "u_age": {
+                          "type": "integer"
+                      },
+                      "u_name": {
+                          "type": "array",
+                          "items": [
+                              {
+                                  "type": "string"
+                              },
+                              {
+                                  "type": "integer"
+                              },
+                              {
+                                  "type": "integer"
+                              }
+                          ]
+                      },
+                      "u_salary_1_5_eyar": {
+                          "type": "integer"    
+                      }            
+                  },
+                  "required": [
+                      "u_age",
+                      "u_name",
+                      "u_salary_1_5_year"
+                  ]
+              },
+              "qa_salary_after_12_months": {
+                  "type": "number"
+              },
+              "qa_salary_after_6_months": {
+                  "type": "integer"
+              },
+              "start_qa_salary":{
+                  "type": "integer"
+              }
+          },
+          "required": [
+              "person",
+              "qa_salary_after_12_months",
+              "qa_salary_after_6_months",
+              "start_qa_salary"
+          ]
+      }
+
+      pm.test("Validate schema", () =>{
+          pm.response.to.have.jsonSchema(schema);
+      });
+      ```
+   3) В ответе указаны коэффициенты умножения salary, напишите тесты по проверке правильности результата перемножения на коэффициент.
+      ```javascript
+      const resData = pm.response.json();
+      ```
+      `check response qa_salary_after_6_months = salary * 2`
+      ```javascript
+      pm.test("Check correctly coef salary x2, from response qa_salary_after_6_months", () => {
+          pm.expect(resData.person.u_name[1]*2).to.eql(resData.qa_salary_after_6_months);
+      });
+      ```
+      `check response qa_salary_after_12_months = salary * 2.9`
+      ```javascript
+      pm.test("Check correctly coef salary x 2.9, from response qa_salary_after_12_months", () => {
+          pm.expect(resData.person.u_name[1]*2.9).to.eql(resData.qa_salary_after_12_months);
+      });
+      ```
+      `check response u_salary_1.5_eyar = salary * 4`
+      ```javascript
+      pm.test("Check correctly coef salary x 4, from response u_salary_1_5_year", () => {
+          pm.expect(resData.person.u_name[1]*4).to.eql(resData.person.u_salary_1_5_year);
+      });
+      ```
+   4) Достать значение из поля 'u_salary_1.5_year' и передать в поле salary запроса http://162.55.220.72:5005/get_test_user
+      ```javascript
+      pm.environment.set("salary", resData.person.u_salary_1_5_year);
+      ```
+
+### 3) http://162.55.220.72:5005/new_data    
+   `req.`  
+   `POST`  
+   `age`: int  
+   `salary`: int  
+   `name`: str  
+   `auth_token`  
+
+   `response`
+   ```sh
+   {'name':name,
+     'age': int(age),
+     'salary': [salary, str(salary*2), str(salary*3)]}
    ```
+#
+### Тесты:
+   1) Статус код 200
+      ```javascript
+      pm.test("Status code is 200 ok", () => {
+          pm.response.to.have.status(200);
+      });
+      ```
+   2) Проверка структуры json в ответе.
+      ```javascript
+      const schema = {
+          "type": "object",
+          "properties": {
+              "age": {
+                  "type": "integer"
+              },
+              "name": {
+                  "type": "string"
+              },
+              "salary": {
+                  "type": "array",
+                  "items": [{"type": "integer"}, {"type": "string"}, {"type": "string"}]
+              }
+          },
+          "required": [
+              "age",
+              "name",
+              "salary"
+          ]
+      }; 
 
-//2) Проверка структуры json в ответе.
-const schema = {
-    "type": "object",
-    "properties": {
-        "person": {
-            "type": "object",
-            "properties":{
-                "u_age": {
-                    "type": "integer"
-                },
-                "u_name": {
-                    "type": "array",
-                    "items": [
-                        {
-                            "type": "string"
-                        },
-                        {
-                            "type": "integer"
-                        },
-                        {
-                            "type": "integer"
-                        }
-                    ]
-                },
-                "u_salary_1_5_eyar": {
-                    "type": "integer"    
-                }            
-            },
-            "required": [
-                "u_age",
-                "u_name",
-                "u_salary_1_5_year"
-            ]
-        },
-        "qa_salary_after_12_months": {
-            "type": "number"
-        },
-        "qa_salary_after_6_months": {
-            "type": "integer"
-        },
-        "start_qa_salary":{
-            "type": "integer"
-        }
-    },
-    "required": [
-        "person",
-        "qa_salary_after_12_months",
-        "qa_salary_after_6_months",
-        "start_qa_salary"
-    ]
-}
-
-pm.test("Validate schema", () =>{
-    pm.response.to.have.jsonSchema(schema);
-});
-
-//3) В ответе указаны коэффициенты умножения salary, напишите тесты по проверке правильности результата перемножения на коэффициент.
-const resData = pm.response.json();
-
-//check response qa_salary_after_6_months = salary * 2
-pm.test("Check correctly coef salary x2, from response qa_salary_after_6_months", () => {
-    pm.expect(resData.person.u_name[1]*2).to.eql(resData.qa_salary_after_6_months);
-});
-
-//check response qa_salary_after_12_months = salary * 2.9
-pm.test("Check correctly coef salary x 2.9, from response qa_salary_after_12_months", () => {
-    pm.expect(resData.person.u_name[1]*2.9).to.eql(resData.qa_salary_after_12_months);
-});
-
-//check response u_salary_1.5_eyar = salary * 4
-pm.test("Check correctly coef salary x 4, from response u_salary_1_5_year", () => {
-    pm.expect(resData.person.u_name[1]*4).to.eql(resData.person.u_salary_1_5_year);
-});
-
-//4) Достать значение из поля 'u_salary_1.5_year' и передать в поле salary запроса http://162.55.220.72:5005/get_test_user
-pm.environment.set("salary", resData.person.u_salary_1_5_year);
-
-/*3) http://162.55.220.72:5005/new_data
-req.
-POST
-age: int
-salary: int
-name: str
-auth_token
-
-Resp.
-{'name':name,
-  'age': int(age),
-  'salary': [salary, str(salary*2), str(salary*3)]}
-
-===================
-Тесты:
-*/
-//1) Статус код 200
-pm.test("Status code is 200 ok", () => {
-    pm.response.to.have.status(200);
-});
-
-//2) Проверка структуры json в ответе.
-const schema = {
-    "type": "object",
-    "properties": {
-        "age": {
-            "type": "integer"
-        },
-        "name": {
-            "type": "string"
-        },
-        "salary": {
-            "type": "array",
-            "items": [{"type": "integer"}, {"type": "string"}, {"type": "string"}]
-        }
-    },
-    "required": [
-        "age",
-        "name",
-        "salary"
-    ]
-}; 
-
-pm.test("Validate schema ok", () => {
-    pm.response.to.have.jsonSchema(schema)
-});
-
-//3) В ответе указаны коэффициенты умножения salary, напишите тесты по проверке правильности результата перемножения на коэффициент.
-const resData = pm.response.json();
-
-//check response salary[1]=salary*2
-pm.test("Check correctly coef =2, from response salary[1]", () => {
-    pm.expect(parseInt(resData.salary[1])).to.eql(resData.salary[0]*2)
-});
-
-//check response salary[2]=salary*3
-pm.test("Check correctly coef = 3, from response salary[2]", () => {
-    pm.expect(parseInt(resData.salary[2])).to.eql(resData.salary[0]*3)
-});
-
-//4) проверить, что 2-й элемент массива salary больше 1-го и 0-го
-pm.test("Check that salary[1] > salary[0]", () => {
-    if (parseInt(resData.salary[0])>=parseInt(resData.salary[1])) {
-    pm.expect.fail();
-    }
-});
-
-/*
-4) http://162.55.220.72:5005/test_pet_info
+      pm.test("Validate schema ok", () => {
+          pm.response.to.have.jsonSchema(schema)
+      });
+      ```
+   3) В ответе указаны коэффициенты умножения salary, напишите тесты по проверке правильности результата перемножения на коэффициент.
+      ```javascript
+      const resData = pm.response.json();
+      ```
+      `check response salary[1]=salary*2`
+      ```javascript
+      pm.test("Check correctly coef =2, from response salary[1]", () => {
+          pm.expect(parseInt(resData.salary[1])).to.eql(resData.salary[0]*2)
+      });
+      ```
+      `check response salary[2]=salary*3`
+      ```javascript
+      pm.test("Check correctly coef = 3, from response salary[2]", () => {
+          pm.expect(parseInt(resData.salary[2])).to.eql(resData.salary[0]*3)
+      });
+      ```
+   4) проверить, что 2-й элемент массива salary больше 1-го и 0-го
+      ```javascript
+      pm.test("Check that salary[1] > salary[0]", () => {
+          if (parseInt(resData.salary[0])>=parseInt(resData.salary[1])) {
+          pm.expect.fail();
+          }
+      });
+      ```
+### 4) http://162.55.220.72:5005/test_pet_info
 req.
 POST
 age: int
