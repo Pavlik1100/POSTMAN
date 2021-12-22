@@ -2,6 +2,246 @@
 ### Completed requests collection [HW_2.postman_collection.json](https://github.com/Pavlik1100/POSTMAN/blob/main/HW_2/HW_2.postman_collection.json)
 ### Test run Completed requests collection [HW_2.postman_test_run.json](https://github.com/Pavlik1100/POSTMAN/blob/main/HW_2/HW_2.postman_test_run.json)
 #
+
+/*
+1) необходимо залогиниться
+POST
+http://162.55.220.72:5005/login
+login : str (кроме /)
+password : str
+
+Приходящий токен необходимо передать во все остальные запросы.
+
+===================
+дальше все запросы требуют наличие токена.
+*/
+var jsonData = pm.response.json();
+var get_token = jsonData.token;
+pm.environment.set("token", get_token);
+
+/*
+2) http://162.55.220.72:5005/user_info
+req. (RAW JSON)
+POST
+age: int
+salary: int
+name: str
+auth_token
+
+
+resp.
+{'start_qa_salary':salary,
+ 'qa_salary_after_6_months': salary * 2,
+ 'qa_salary_after_12_months': salary * 2.9,
+ 'person': {'u_name':[user_name, salary, age],
+                                'u_age':age,
+                                'u_salary_1.5_year': salary * 4}
+                                }
+
+===================
+Тесты:
+*/
+
+//1) Статус код 200
+pm.test("Status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+//2) Проверка структуры json в ответе.
+const schema = {
+    "type": "object",
+    "properties": {
+        "person": {
+            "type": "object",
+            "properties":{
+                "u_age": {"type": "integer"},
+                "u_name": {
+                    "type": "array",
+                    "items": [{"type": "string"},{"type": "integer"},{"type": "integer"}]
+                },
+                "u_salary_1_5_eyar": {
+                    "type": "integer"    
+                }            
+            },
+            "required": [
+                "u_age",
+                "u_name",
+                "u_salary_1_5_year"
+            ]
+        },
+        "qa_salary_after_12_months": {
+            "type": "number"
+        },
+        "qa_salary_after_6_months": {
+            "type": "integer"
+        },
+        "start_qa_salary":{
+            "type": "integer"
+        }
+    },
+    "required": [
+        "person",
+        "qa_salary_after_12_months",
+        "qa_salary_after_6_months",
+        "start_qa_salary"
+    ]
+}
+pm.test("Validate schema", () =>{
+    pm.response.to.have.jsonSchema(schema);
+});
+
+//3) В ответе указаны коэффициенты умножения salary, напишите тесты по проверке правильности результата перемножения на коэффициент.
+const resData = pm.response.json();
+
+//check response qa_salary_after_6_months = salary * 2
+pm.test("Check correctly coef salary x2, from response qa_salary_after_6_months", () => {
+    pm.expect(resData.person.u_name[1]*2).to.eql(resData.qa_salary_after_6_months);
+});
+
+//check response qa_salary_after_12_months = salary * 2.9
+pm.test("Check correctly coef salary x 2.9, from response qa_salary_after_12_months", () => {
+    pm.expect(resData.person.u_name[1]*2.9).to.eql(resData.qa_salary_after_12_months);
+});
+
+//check response u_salary_1.5_eyar = salary * 4
+pm.test("Check correctly coef salary x 4, from response u_salary_1_5_year", () => {
+    pm.expect(resData.person.u_name[1]*4).to.eql(resData.person.u_salary_1_5_year);
+});
+
+//4) Достать значение из поля 'u_salary_1.5_year' и передать в поле salary запроса http://162.55.220.72:5005/get_test_user
+pm.environment.set("salary", resData.person.u_salary_1_5_year);
+
+/*3) http://162.55.220.72:5005/new_data
+req.
+POST
+age: int
+salary: int
+name: str
+auth_token
+
+Resp.
+{'name':name,
+  'age': int(age),
+  'salary': [salary, str(salary*2), str(salary*3)]}
+
+===================
+Тесты:
+*/
+//1) Статус код 200
+pm.test("Status code is 200 ok", () => {
+    pm.response.to.have.status(200);
+});
+
+//2) Проверка структуры json в ответе.
+const schema = {
+    "type": "object",
+    "properties": {
+        "age": {
+            "type": "integer"
+        },
+        "name": {
+            "type": "string"
+        },
+        "salary": {
+            "type": "array",
+            "items": [{"type": "integer"}, {"type": "string"}, {"type": "string"}]
+        }
+    },
+    "required": [
+        "age",
+        "name",
+        "salary"
+    ]
+}; 
+
+pm.test("Validate schema ok", () => {
+    pm.response.to.have.jsonSchema(schema)
+});
+
+//3) В ответе указаны коэффициенты умножения salary, напишите тесты по проверке правильности результата перемножения на коэффициент.
+const resData = pm.response.json();
+
+//check response salary[1]=salary*2
+pm.test("Check correctly coef =2, from response salary[1]", () => {
+    pm.expect(parseInt(resData.salary[1])).to.eql(resData.salary[0]*2)
+});
+
+//check response salary[2]=salary*3
+pm.test("Check correctly coef = 3, from response salary[2]", () => {
+    pm.expect(parseInt(resData.salary[2])).to.eql(resData.salary[0]*3)
+});
+
+//4) проверить, что 2-й элемент массива salary больше 1-го и 0-го
+pm.test("Check that salary[1] > salary[0]", () => {
+    if (parseInt(resData.salary[0])>=parseInt(resData.salary[1])) {
+    pm.expect.fail();
+    }
+});
+
+/*
+4) http://162.55.220.72:5005/test_pet_info
+req.
+POST
+age: int
+weight: int
+name: str
+auth_token
+
+
+Resp.
+{'name': name,
+ 'age': age,
+ 'daily_food':weight * 0.012,
+ 'daily_sleep': weight * 2.5}
+
+
+Тесты:
+*/
+
+//1) Статус код 200
+pm.test("Status code is 200 ok", () => {
+    pm.response.to.have.status(200);
+});
+
+//2) Проверка структуры json в ответе.
+const schema = {
+    "type": "object",
+    "properies": {
+        "age": "string",
+        "daily_food": "number",
+        "daily_sleep": "number",
+        "name": "string"
+    },
+    "required": [
+        "age",
+        "daily_food",
+        "daily_sleep",
+        "name"
+    ]
+};
+
+pm.test("Validate scheme of response", () => {
+    pm.response.to.have.jsonSchema(schema)
+});
+
+//3) В ответе указаны коэффициенты умножения weight, напишите тесты по проверке правильности результата перемножения на коэффициент.
+const resData = pm.response.json();
+const reqData = request.data;
+
+//check response daily_food = weight * 0.012
+pm.test("Check correct coef daily_food from response, daily_food = weight * 0.012", () => {
+    pm.expect(reqData.weight*0.012).to.eql(resData.daily_food)
+});
+
+//check response daily_sleep = weight * 2.5
+pm.test("Check correct coef daily_sleep from response,  daily_sleep = weight * 2.5", () => {
+    pm.expect(reqData.weight*2.5).to.eql(resData.daily_sleep)
+});
+
+
+
+
+#
 1. http://162.55.220.72:5005/first
    1) Отправить запрос.  
       Ззапрос на `http://162.55.220.72:5005/first` с методом `get`, отправляем нажав `send`
