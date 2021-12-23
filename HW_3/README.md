@@ -1,6 +1,6 @@
-# HW_2 POSTMAN
-### Completed requests collection [HW_2.postman_collection.json](https://github.com/Pavlik1100/POSTMAN/blob/main/HW_2/HW_2.postman_collection.json)
-### Test run Completed requests collection [HW_2.postman_test_run.json](https://github.com/Pavlik1100/POSTMAN/blob/main/HW_2/HW_2.postman_test_run.json)
+# HW_3 POSTMAN
+### Completed requests collection [HW_3.postman_collection.json](https://github.com/Pavlik1100/POSTMAN/blob/main/HW_3/HW_3.postman_collection.json)
+### Test run Completed requests collection [HW_3.postman_test_run.json](https://github.com/Pavlik1100/POSTMAN/blob/main/HW_3/HW_3.postman_test_run.json)
 #
 
 ### 1) необходимо залогиниться и получить токен
@@ -386,8 +386,190 @@ pm.environment.set("token", get_token);
       });
       ```
 
+### 6) http://162.55.220.72:5005/currency
+   `req.`
+   `POST`
+   `auth_token`
 
+   `response` Передаётся список массив объектов.
+   ```sh
+   [
+   {"Cur_Abbreviation": str,
+    "Cur_ID": int,
+    "Cur_Name": str
+   }
+   …
+   {"Cur_Abbreviation": str,
+    "Cur_ID": int,
+    "Cur_Name": str
+   }
+   ]
+   ```
+   #
+   ### Тесты:
+   1) Можете взять любой объект из присланного списка, используйте js random. В объекте возьмите Cur_ID и передать через окружение в следующий запрос.
+      ```javascript   
+      let resData = pm.response.json();
 
+      let len_resData=resData.length;
 
+      function getRandom (min, max) {
+          return Math.floor(Math.random()*(max - min)) + min;
+      };
 
+      ne_cur = getRandom(0, len_resData);
+
+      tot_cur = resData[ne_cur].Cur_ID;
+
+      pm.environment.set("curr_code", tot_cur);
+      ```
+
+   #
+   ### 7) http://162.55.220.72:5005/curr_byn
+   `req.`
+   `POST`
+   `auth_token`
+   `curr_code`: int
+   ```sh
+   Resp.
+   {
+       "Cur_Abbreviation": str
+       "Cur_ID": int,
+       "Cur_Name": str,
+       "Cur_OfficialRate": float,
+       "Cur_Scale": int,
+       "Date": str
+   }
+   ```
+   #
+   ### Тесты:
+   1) Статус код 200
+      ```javascript
+      pm.test("Status coode is 200 ok", () => {
+          pm.response.to.have.status(200);
+      });
+      ```
+   2) Проверка структуры json в ответе.
+      ```javascript
+      let schema = {
+          "type": "object",
+          "properties": {
+              "Cur_Abbreviation": {
+                  "type": "string"
+              },
+              "Cur_ID": {
+                  "type": "integer"
+              },
+              "Cur_Name": {
+                  "type": "string"
+              },
+              "Cur_OfficialRate": {
+                  "type": "number"
+              },
+              "Cur_Scale": {
+                  "type": "integer"
+              },
+              "Date": {
+                  "type": "string"
+              }
+          },
+          "required": [
+              "Cur_Abbreviation",
+              "Cur_ID",
+              "Cur_Name",
+              "Cur_OfficialRate",
+              "Cur_Scale",
+              "Date"
+          ]
+      };
+
+      pm.test("Validate response schema", () => {
+          pm.response.to.have.jsonSchema(schema);
+      });
+      ```
+   #
+   ### ***
+   1) получить список валют
+   2) итерировать список валют
+   3) в каждой итерации отправлять запрос на сервер для получения курса каждой валюты
+   4) если возвращается 500 код, переходим к следующей итреации
+   5) если получаем 200 код, проверяем response json на наличие поля "Cur_OfficialRate"
+   6) если поле есть, пишем в консоль инфу про фалюту в виде response
+      ```sh
+      {
+          "Cur_Abbreviation": str
+          "Cur_ID": int,
+          "Cur_Name": str,
+          "Cur_OfficialRate": float,
+          "Cur_Scale": int,
+          "Date": str
+      }
+      ```
+   7) переходим к следующей итерации
+   ### Решение задания со зведами
+   ```javascript
+   const options = {
+       "method": "POST",
+       "url": "http://162.55.220.72:5005/currency",
+       "body": {
+           "mode": "formdata",
+           "formdata": [
+               {"key":"auth_token", "value": pm.environment.get("token")}
+           ]
+       }
+   };
+
+   pm.sendRequest(options, (error, response) => {
+       if (error) throw new Error(error);
+       const dataCur = response.json();    
+       for (let pers in dataCur){
+           const cur = dataCur[pers].Cur_ID;
+           const curOptions = {
+               "method": "POST",
+               "url": "http://162.55.220.72:5005/curr_byn",
+               "body": {
+                   "mode": "formdata",
+                   "formdata": [
+                       {"key":"auth_token", "value": pm.environment.get("token")},
+                       {"key": "curr_code", "value": cur}
+                   ]
+               }
+           };
+           pm.sendRequest(curOptions, (error, response) => {
+               if (response.code != 200) {
+               } 
+               else {
+                   curByn = response.json();                        
+                   if ("Cur_OfficialRate" in curByn){
+                       console.log('{');
+                       for (let opt in curByn) {
+                           console.log("   '" + opt + "': " + curByn[opt]);
+                       };
+                       console.log('}')
+                   };
+               };
+           });
+       }
+   });
+   ```
+   ### Пример из консоли
+   ```sh
+    
+   POST http://162.55.220.72:5005/curr_byn                         200   5.69 s
+
+   {
+
+      'Cur_Abbreviation': AMD
+
+      'Cur_ID': 510
+
+      'Cur_Name': Армянских драмов
+
+      'Cur_OfficialRate': 5.1366
+
+      'Cur_Scale': 1000
+
+      'Date': 2021-12-23T00:00:00
+   } 
+   ```
 # [Back to main dir POSTMAN](https://github.com/Pavlik1100/POSTMAN)
