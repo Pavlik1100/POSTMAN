@@ -217,7 +217,8 @@ pm.environment.set("token", get_token);
    `age`: int  
    `weight`: int  
    `name`: str  
-   `auth_token`  
+   `auth_token`   
+   
   `response`
   ```sh
   {'name': name,
@@ -281,14 +282,14 @@ pm.environment.set("token", get_token);
       });
       ```
 ### 5) http://162.55.220.72:5005/get_test_user
-   `req.`
-   `POST`
-   `age`: int
-   `salary`: int
-   `name`: str
-   `auth_token`
+   `req.`  
+   `POST`  
+   `age`: int  
+   `salary`: int  
+   `name`: str  
+   `auth_token`  
 
-   `response`
+   `response`  
    ```sh
    {'name': name,
     'age':age,
@@ -387,9 +388,9 @@ pm.environment.set("token", get_token);
       ```
 
 ### 6) http://162.55.220.72:5005/currency
-   `req.`
-   `POST`
-   `auth_token`
+   `req.`  
+   `POST`  
+   `auth_token`  
 
    `response` Передаётся список массив объектов.
    ```sh
@@ -426,12 +427,13 @@ pm.environment.set("token", get_token);
 
    #
    ### 7) http://162.55.220.72:5005/curr_byn
-   `req.`
-   `POST`
-   `auth_token`
-   `curr_code`: int
+   `req.`  
+   `POST`  
+   `auth_token`  
+   `curr_code`: int  
+     
+   `response`    
    ```sh
-   Resp.
    {
        "Cur_Abbreviation": str
        "Cur_ID": int,
