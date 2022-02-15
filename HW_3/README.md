@@ -2,7 +2,6 @@
 ### Completed requests collection [HW_3.postman_collection.json](https://github.com/Pavlik1100/POSTMAN/blob/main/HW_3/HW_3.postman_collection.json)
 ### Test run Completed requests collection [HW_3.postman_test_run.json](https://github.com/Pavlik1100/POSTMAN/blob/main/HW_3/HW_3.postman_test_run.json)
 #
-
 ### 1) необходимо залогиниться и получить токен
 `POST`  
 `http://162.55.220.72:5005/login`  
